@@ -94,12 +94,12 @@ while True:
     while valBottom not in range(ValWet,ValDry + 1,1):
         print("Dit resultaat zit niet tussen", ValWet, "en", ValDry,". Vul een nieuw resultaat in.")
         valBottom = int(float(input("Geef een resultaat: ")))     
-    print("resultaat 2 is:", valBottom)
+    print("Het resultaat van de onderste sensor is:", valBottom)
 
 
 #   Hieronder worden de waardes van de bovenste en onderste sensor omgezet in 0-100%
     RHtop = int(float((ValWet/valTop)*100))
-    RHbottom = int(float((ValDry/valBottom)*100))
+    RHbottom = int(float((ValWet/valBottom)*100))
 
     print("De RH van de bovenste sensor is:", RHtop)
     print("De RH van de onderste sensor is:", RHbottom)
@@ -113,6 +113,7 @@ while True:
         situation = situation + 2
 
 #   Met gebruik van de 4 "if" statements kunnen we iets anders laten gebeuren per situatie. Hierna word de variabele weer 0 voor de volgende meting.
+    situation = 0
     if situation == 0:
         print("Alle grond is nog nat genoeg. Er gebeurd dus niks")
     if situation == 1:
