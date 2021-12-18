@@ -12,11 +12,11 @@ import time
 setup = str("nee")
 while setup == "nee":
     
-    print("Wat is het gemiddelde resutaat van de sensor als deze droge grond meet?")
+    print("Wat is het gemiddelde resultaat van de sensor als deze droge grond meet?")
     ValDry = int(float(input("Geef een resultaat: ")))
     print("Het resultaat in droge grond is:", ValDry)
 
-    print("Wat is het gemiddelde resutaat van de sensor als deze hele natte grond meet?")
+    print("Wat is het gemiddelde resultaat van de sensor als deze hele natte grond meet?")
     ValWet = int(float(input("Geef een resultaat: ")))
     print("Het resultaat in hele natte grond is:", ValWet)
 
