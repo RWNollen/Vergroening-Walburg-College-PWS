@@ -72,6 +72,7 @@ while setup == "nee":
         elif setupcheck == "nee":
             print("Setup opnieuw beginnen.")
             time.sleep(1)
+            break
         else:
             print("Dit is geen mogelijk antwoord, vul ja of nee in")
             setupcheck = str(input("Zijn deze waardes correct? (ja/nee): "))
