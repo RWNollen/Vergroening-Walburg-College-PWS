@@ -1,14 +1,16 @@
-#De volgende vier regels importeren meer functies
+# De volgende vier regels importeren meer functies
 import time
 from w1thermsensor import W1ThermSensor, Unit
 from gpiozero import LED
 import RPi.GPIO as GPIO
-#Deze drie regels laten het programma weten wat voor sensor het is en waar de LED lampjes zitten.
+# Deze drie regels laten het programma weten wat voor sensor het is en waar de LED lampjes zitten.
 red = LED(18)
 green = LED(24)
 sensor = W1ThermSensor()
 
-
+red.off()
+green.off()
+# Hieronder begint de calibratie en worden gegevens gevraagd om de rest van het programma te laten werken.
 setup = str("nee")
 while setup == "nee":
 
@@ -18,7 +20,11 @@ while setup == "nee":
         print("Stop de sensor in ijskoud water. Zit de sensor in ijskoud water? (ja/nee)")
         IceLoop = str(input("(ja/nee)?: "))
     print("De sensor gaat nu de temperatuur meten. Dit kan even duren.")
-    time.sleep(10)
+    n = 10
+    while n != 0:
+        print(int(float(sensor.get_temperature(Unit.DEGREES_C))))
+        n = n - 1
+        time.sleep(2)       
     ValIce = int(float(sensor.get_temperature(Unit.DEGREES_C)))
     print("De temperatuur gemeten in ijskoud water is", ValIce, "Celcius")
     time.sleep(1)
@@ -29,7 +35,11 @@ while setup == "nee":
         print("Stop de sensor in super warm water. Zit de sensor in super warm water? (ja/nee)")
         WarmLoop = str(input("(ja/nee)?: "))
     print("De sensor gaat nu de temperatuur meten. Dit kan even duren.")
-    time.sleep(10)
+    n = 10
+    while n != 0:
+        print(int(float(sensor.get_temperature(Unit.DEGREES_C))))
+        n = n - 1
+        time.sleep(2)
     ValWarm = int(float(sensor.get_temperature(Unit.DEGREES_C)))
     print("De temperatuur gemeten in super warm water is", ValWarm, "Celcius")
     time.sleep(1)
@@ -55,6 +65,7 @@ while setup == "nee":
     print("Er zitten", delay, "seconden tussen metingen.")
     time.sleep(2)
 
+# Hieronder komen alle gegevens nog een keer voor zodat de gebruiker kan checken of alle informatie klopt.
     print("De temperatuur gemeten in ijskoud water is", ValIce, "Celcius")
     print("De temperatuur gemeten in super warm water is", ValWarm, "Celcius")
     print("De optimale temperatuur is:",  OptTemp, "Celcius")
@@ -75,20 +86,22 @@ while setup == "nee":
 
 print("Setup is compleet. Het programma begint nu met werken.")
                      
-
+# Deze loop hieronder laat het programma steeds weer meten en berekenen met een pauze tussen elke meting.
 while True:
     temp = int(float(sensor.get_temperature(Unit.DEGREES_C)))
     print(temp, "Celcius")
 
-    RT = int(float((ValWarm/temp)*100))
+    RT = int(float((temp/ValWarm)*100))
     print("RT is:", RT, "%")
 
-    if RT + variation < OptTemp:
+
+# Hieronder word de conclusie gevormd. Als het groene lampje een keer knippert, moet het systeem aan en als de rode knippert is alles nog goed.
+    if RT + variation < ((OptTemp/ValWarm)*100):
         green.on()
     else:
         red.on()
 
-    time.sleep(5)
+    time.sleep(1)
     green.off()
     red.off()
     time.sleep(delay)
@@ -96,15 +109,6 @@ while True:
 
 
 
-
-#green.off()
-#while True:
-#    temp = int(float(sensor.get_temperature(Unit.DEGREES_C)))
-#    print(temp, "Celcius")
-#    if temp > 25:
-#            green.on()
-#            red.off()
-#    time.sleep(1)
 
 
 
